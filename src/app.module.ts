@@ -1,3 +1,4 @@
+import { UsersModule } from './users/users.module';
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -7,6 +8,7 @@ import { HistoryModule } from './history/history.module';
 
 @Module({
   imports: [
+    UsersModule,
     ConfigModule.forRoot({
       isGlobal: true,
     }),
@@ -16,4 +18,4 @@ import { HistoryModule } from './history/history.module';
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule { }
