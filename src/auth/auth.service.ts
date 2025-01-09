@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { AuthType } from './auth.type';
 
@@ -64,6 +64,9 @@ export class AuthService {
     // Almacena el refresh token para validación futura
     this.refreshTokens.add(refreshToken);
 
-    return { accessToken, refreshToken };
+    return {
+      accessToken,
+      refreshToken,
+    };
   }
 }

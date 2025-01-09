@@ -1,8 +1,8 @@
-import { Controller, Post, Body, Get, HttpException, HttpStatus } from '@nestjs/common';
+import { Controller, Post, Body, Get, HttpException, HttpStatus, Res } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthType, refreshToken } from './auth.type';
 import { ApiBody, ApiTags } from '@nestjs/swagger';
-
+import { Response } from 'express';
 @ApiTags('auth')
 @Controller('auth')
 export class AuthController {
@@ -10,8 +10,9 @@ export class AuthController {
 
   @Post('login')
   @ApiBody({ type: AuthType })
-  async login(@Body() user: AuthType) {
-    return this.authService.login(user);
+  async login(@Body() user: AuthType, @Res() res?: Response) {
+    const { accessToken, refreshToken } = await this.authService.login(user);
+    return res.cookie('refreshToken', refreshToken, { httpOnly: true, secure:true, path:"/refreshT" }).json({ accessToken });
   }
   @Get('logout')
     async logout() {
