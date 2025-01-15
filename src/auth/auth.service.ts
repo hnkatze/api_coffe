@@ -14,7 +14,7 @@ export class AuthService {
    * @returns Object con accessToken y refreshToken
    */
   async login(user: AuthType) {
-    return this.issueTokens(user.userId, user.userName);
+    return this.issueTokens(user.userId, user.userName, user.image, user.email);
   }
 
   /**
@@ -25,6 +25,14 @@ export class AuthService {
     return {
       message: 'Logout success',
     };
+  }
+  async validateToken(token: string) {
+    try {
+      const payload = this.jwtService.verify(token, { secret: process.env.SECRET_KEY });
+      return payload;
+    } catch {
+      throw new HttpException('Invalid token', HttpStatus.UNAUTHORIZED);
+    }
   }
 
   /**
@@ -56,10 +64,10 @@ export class AuthService {
    * @param username Nombre del usuario (opcional)
    * @returns Object con accessToken y refreshToken
    */
-  private issueTokens(userId: string, userName?: string) {
-    const payload = { userId, userName };
-    const accessToken = this.jwtService.sign(payload, { secret: 'Acceso solo de 15', expiresIn: '15m' });
-    const refreshToken = this.jwtService.sign(payload, { secret: 'refresh-secret', expiresIn: '7d' });
+  private issueTokens(userId: string, userName?: string, image?: string, email?: string) {
+    const payload = { userId, userName,image,email };
+    const accessToken = this.jwtService.sign(payload, { secret: process.env.SECRET_KEY, expiresIn: '15m' });
+    const refreshToken = this.jwtService.sign(payload, { secret: process.env.SECRET_KEY, expiresIn: '7d' });
 
     // Almacena el refresh token para validación futura
     this.refreshTokens.add(refreshToken);

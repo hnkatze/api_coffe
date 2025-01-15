@@ -5,7 +5,7 @@ import { AuthGuard } from 'src/auth/auth.guard';
 
 @Controller('history')
 export class HistoryController {
-    constructor(private readonly historyService: HistoryService ) {}
+    constructor(private readonly historyService: HistoryService) { }
 
     @Post()
     async saveHistory(@Body() history: CreateHistoryDto) {
@@ -13,9 +13,13 @@ export class HistoryController {
     }
 
     @Get()
-    @UseGuards(AuthGuard)
     async getHistorys() {
         return this.historyService.getHistorys();
     }
-    
+
+    @Post('date')
+    @UseGuards(AuthGuard)
+    async getHistoryByDateBetween(@Body() { start, end }: { start: string, end: string }) {
+        return this.historyService.getHistoryByDateBetween(start, end);
+    }
 }

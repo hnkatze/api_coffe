@@ -19,7 +19,10 @@ status: string;
 table: string;
 
 @Prop()
-timestamp: string;
+delay: Date;
+
+@Prop()
+timesTamp: Date;
 
 @Prop()
 total: number;

@@ -16,6 +16,12 @@ export class AuthType {
 
     @ApiProperty({ example: 'String', description: 'The ID of the user' })
     userId: string;
+
+    @ApiProperty({ example: 'String', description: 'The image of the user' })
+    image: string;
+
+    @ApiProperty({ example: 'String', description: 'The email of the user' })
+    email: string;
 }
 
 

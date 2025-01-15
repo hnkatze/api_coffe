@@ -17,7 +17,25 @@ export class HistoryService {
         await newHistory.save();
         return newHistory;
     }
-    async getHistorys(): Promise<History[]>{ 
+    async getHistorys(): Promise<History[]>{
         return this.historyModel.find().exec();
     }
+
+    async getHistoryByDateBetween(start: string, end: string): Promise<History[]> {
+        try {
+            const startDate = new Date(start);
+            const endDate = new Date(end);
+    
+            const data = await this.historyModel.find({
+                timesTamp: { $gte: startDate, $lte: endDate }
+            }).exec();
+    
+            console.log("Query Result:", data);
+            return data;
+        } catch (err) {
+            console.error(err);
+            throw err;
+        }
+    }
+    
 }

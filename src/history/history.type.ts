@@ -6,7 +6,8 @@ export type HistoryType = {
     items: itemsType[];
     status: string;
     table: string;
-    timestamp: string;
+    delay: Date;
+    timesTamp: Date;
     total: number;
     };
 
