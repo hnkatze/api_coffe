@@ -1,0 +1,18 @@
+version: '3.8'
+services:
+  api:
+    image: node:20
+    container_name: nestjs-api
+    working_dir: /usr/src/app
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - '3000:3000'
+    command: npm run start:dev
+    environment:
+      - MONGO_DB_URI
+      - NODE_ENV
+      - SECRET_KEY
+    env_file:
+      - .production.env
