@@ -4,7 +4,6 @@ import { AuthType } from './auth.type';
 
 @Injectable()
 export class AuthService {
-  private refreshTokens: Set<string> = new Set();
 
   constructor(private jwtService: JwtService) {}
 
@@ -41,15 +40,12 @@ export class AuthService {
    * @returns Object con un nuevo accessToken
    */
   async refreshAccessToken(refreshToken: string) {
-    if (!this.refreshTokens.has(refreshToken)) {
-      throw new HttpException('Invalid refresh token', HttpStatus.UNAUTHORIZED);
-    }
 
     try {
-      const payload = this.jwtService.verify(refreshToken, { secret: 'refresh-secret' });
+      const payload = this.jwtService.verify(refreshToken, { secret: process.env.SECRET_KEY });
       const newAccessToken = this.jwtService.sign(
         { userId: payload.userId },
-        { secret: 'access-secret', expiresIn: '15m' },
+        { secret: process.env.SECRET_KEY, expiresIn: '15m' },
       );
 
       return { accessToken: newAccessToken };
@@ -68,9 +64,6 @@ export class AuthService {
     const payload = { userId, userName,image,email };
     const accessToken = this.jwtService.sign(payload, { secret: process.env.SECRET_KEY, expiresIn: '15m' });
     const refreshToken = this.jwtService.sign(payload, { secret: process.env.SECRET_KEY, expiresIn: '7d' });
-
-    // Almacena el refresh token para validación futura
-    this.refreshTokens.add(refreshToken);
 
     return {
       accessToken,
