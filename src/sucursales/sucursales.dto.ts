@@ -1,13 +1,21 @@
 export class SucursalesDto {
     readonly name: string;
-    readonly address: string;
-    readonly phone: string;
-    readonly lat: number;
-    readonly long: number;
+    readonly latitude: number;
+    readonly longitude: number;
+    readonly radius: number;
 }
 
-export class CreateSucursalesDto extends SucursalesDto {}
+export class CreateSucursalesDto  {
+    readonly name: string;
+    readonly latitude: number;
+    readonly longitude: number;
+    readonly radius: number; 
+}
 
-export class UpdateSucursalesDto extends SucursalesDto {
+export class UpdateSucursalesDto  {
     readonly id: string;
+    readonly name: string;
+    readonly latitude: number;
+    readonly longitude: number;
+    readonly radius: number;
 }

@@ -1,13 +1,11 @@
-import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
-import { Document } from 'mongoose';
+import { Prop, Schema , SchemaFactory } from "@nestjs/mongoose";
+import { Document, Schema as MongooseSchema } from 'mongoose';
 
 
 export type EmployeeDocument = Employee & Document;
 
 @Schema()
 export class Employee {
-    @Prop()
-    id: string;
 
     @Prop()
     name: string;
@@ -18,8 +16,8 @@ export class Employee {
     @Prop()
     role: string;
 
-    @Prop()
-    sucursalId: string;
+    @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'Sucursales', required: true })
+    sucursalId: MongooseSchema.Types.ObjectId;
 }
 
 export const EmployeeSchema = SchemaFactory.createForClass(Employee);

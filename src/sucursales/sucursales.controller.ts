@@ -1,10 +1,6 @@
-/*
-https://docs.nestjs.com/controllers#controllers
-*/
-
 import { Controller, Body, Delete, Get, Param, Post, Put } from '@nestjs/common';
 import { SucursalesService } from './sucursales.service';
-import { CreateSucursalesDto, UpdateSucursalesDto } from './sucursales.dto';
+import {  CreateSucursalesDto, UpdateSucursalesDto } from './sucursales.dto';
 
 @Controller('sucursales')
 export class SucursalesController {
@@ -18,6 +14,16 @@ export class SucursalesController {
   @Get()
   async findAll() {
     return this.sucursalesService.findAll();
+  }
+  @Get('list')
+  async getAll() {
+     const data = await this.sucursalesService.findAll();
+     return ( data).map((item:any) => {
+       return {
+         id: item._id,
+         name: item.name,
+       }
+     });
   }
 
   @Get(':id')

@@ -1,4 +1,4 @@
-import { Body, Controller, Headers, HttpException, HttpStatus, Post, Query } from "@nestjs/common";
+import { Body, Controller, Get, Headers, HttpException, HttpStatus, Param, Post, Put, Query } from "@nestjs/common";
 import { CreateEmployeeDto } from "./employee.dtos";
 import { EmployeeService } from "./employee.service";
 import { ApiBody } from "@nestjs/swagger";
@@ -11,10 +11,18 @@ export class EmployeeController {
         private readonly employeeService: EmployeeService
     ) { }
 
+    @Get('list')
+    async getEmployees() {
+        return this.employeeService.getEmployees();
+    }
 
     @Post('create')
     async createEmployee(@Body() employee: CreateEmployeeDto) {
         return this.employeeService.createEmployee(employee);
+    }
+    @Put('update/:id')
+    async updateEmployee(@Param('id') id: string, @Body() employee: CreateEmployeeDto) {
+        return this.employeeService.updateEmployee(id,employee);
     }
 
     @Post('get-by-id')

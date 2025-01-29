@@ -31,4 +31,9 @@ export class MenuItemController {
   remove(@Param('id') id: string) {
     return this.menuItemService.remove(id);
   }
+
+  @Post('add-array')
+  addArrayOfitems(@Body() createMenuItemDto: MenuItem[]){
+    return this.menuItemService.addArrayOfitems(createMenuItemDto);
+  }
 }

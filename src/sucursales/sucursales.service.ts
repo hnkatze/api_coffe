@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { SucursalesDocument } from './sucursales.schema';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
-import { CreateSucursalesDto, UpdateSucursalesDto } from './sucursales.dto';
+import {  CreateSucursalesDto, UpdateSucursalesDto } from './sucursales.dto';
 
 @Injectable()
 export class SucursalesService {

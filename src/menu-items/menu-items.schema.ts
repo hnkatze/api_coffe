@@ -4,7 +4,7 @@ import { Document, Schema as MongooseSchema } from 'mongoose';
 @Schema()
 class Portion {
     @Prop({ required: true })
-    name: string;
+    size: string;
 
     @Prop({ required: true })
     price: number;
@@ -23,6 +23,9 @@ export class MenuItem {
 
     @Prop({ type: [{ type: MongooseSchema.Types.Mixed }] })
     portions?: Portion[];
+
+    @Prop()
+    image?: string;
 
     @Prop()
     price?: number;

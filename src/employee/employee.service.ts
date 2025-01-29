@@ -24,7 +24,7 @@ export class EmployeeService {
             return response.status(404).json({ message: 'User not found' });
         }else{
            
-            return  this.issueTokens(user.id, user.name, user.role, user.sucursalId);;
+            return this.issueTokens(user.id.toString(), user.name, user.role, user.sucursalId.toString());
         }
 
     }
@@ -87,6 +87,9 @@ export class EmployeeService {
 
     async existEmployee(name: string, password: string) {
         return this.employeeModel.findOne({ name, password }).exec();
+    }
+    async updateEmployee(id: string, employee: CreateEmployeeDto) {
+        return this.employeeModel.findByIdAndUpdate(id, employee, { new: true }).exec();
     }
 
     async getRoleIdAndName(userName: string, password: string) {

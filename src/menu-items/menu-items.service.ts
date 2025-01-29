@@ -14,7 +14,28 @@ export class MenuItemService {
   }
 
   async findAll(): Promise<MenuItem[]> {
-    return this.menuItemModel.find().exec();
+    const data =  this.menuItemModel.find().exec();
+    const cleanData = (await data).map((item) => {
+      const cleanedItem: any = {
+      id: item._id,
+      category: item.category,
+      item: item.item,
+      description: item.description,
+      image: item.image
+      };
+
+      if (item.portions && item.portions.length > 0) {
+      cleanedItem.portions = item.portions;
+      }
+
+      if (item.price) {
+      cleanedItem.price = item.price;
+      }
+
+      return cleanedItem;
+    });
+
+    return cleanData;
   }
 
   async findOne(id: string): Promise<MenuItem> {
@@ -23,6 +44,10 @@ export class MenuItemService {
 
   async update(id: string, updateMenuItemDto: Partial<MenuItem>): Promise<MenuItem> {
     return this.menuItemModel.findByIdAndUpdate(id, updateMenuItemDto, { new: true }).exec();
+  }
+
+  async addArrayOfitems(createMenuItemDto: MenuItem[]){
+    return this.menuItemModel.insertMany(createMenuItemDto);
   }
 
   async remove(id: string): Promise<MenuItem> {

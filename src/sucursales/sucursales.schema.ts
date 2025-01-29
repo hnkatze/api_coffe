@@ -1,24 +1,19 @@
-import { Prop, SchemaFactory } from "@nestjs/mongoose";
+import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 
-
-
-export type SucursalesDocument = Sucursales & Document;
-
+@Schema()
 export class Sucursales {
-    @Prop()
+    @Prop({ required: true })
     readonly name: string;
 
-    @Prop()
-    readonly address: string;
+    @Prop({ required: true })
+    readonly longitude: number;
 
-    @Prop()
-    readonly phone: string;
+    @Prop({ required: true })
+    readonly latitude: number;
 
-    @Prop()
-    readonly lat: number;
-
-    @Prop()
-    readonly long: number;
+    @Prop({ required: true })
+    readonly radius: number;
 }
 
+export type SucursalesDocument = Sucursales & Document;
 export const SucursalesSchema = SchemaFactory.createForClass(Sucursales);

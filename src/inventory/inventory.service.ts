@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { InventoryTemplate, InventoryTemplateDocument } from './inventory-template.schema';
 import { Inventory, InventoryDocument } from './inventory.schema';
 
@@ -17,8 +17,20 @@ export class InventoryService {
     return createdInventory.save();
   }
 
-  async findAll(): Promise<Inventory[]> {
-    return this.inventoryModel.find().populate('items.menuItem').exec();
+  async findAll(sucursalId: string): Promise<Inventory[]> {
+    if (!Types.ObjectId.isValid(sucursalId)) {
+      throw new Error('Invalid sucursalId');
+    }
+    const objectId = new Types.ObjectId(sucursalId);
+    return this.inventoryModel.find({ sucursalId: objectId }).exec();
+  }
+
+  async getOnlyItems(sucursalId: string): Promise<Inventory[]> {
+    if (!Types.ObjectId.isValid(sucursalId)) {
+      throw new Error('Invalid sucursalId');
+    }
+    const objectId = new Types.ObjectId(sucursalId);
+    return this.inventoryModel.find({ sucursalId: objectId }).select('items').exec();
   }
 
   async findOne(id: string): Promise<Inventory> {
@@ -63,16 +75,16 @@ export class InventoryService {
       throw new Error('Inventory not found');
     }
 
-    for (const item of inventory.items) {
-      if (quantities[item.name]) {
-        const template = await this.templateModel.findById(item.template);
-        const templateItem = template.items.find(ti => ti.name === item.name);
-        if (templateItem) {
-          const totalPortions = templateItem.portions.reduce((sum, portion) => sum + portion.quantity, 0);
-          item.quantity = quantities[item.name] * totalPortions;
-        }
-      }
-    }
+    // for (const item of inventory.items) {
+    //   if (quantities[item.name]) {
+    //     // const template = await this.templateModel.findById(item.template);
+    //     // const templateItem = template.items.find(ti => ti.name === item.name);
+    //     if (templateItem) {
+    //       const totalPortions = templateItem.portions.reduce((sum, portion) => sum + portion.quantity, 0);
+    //       item.quantity = quantities[item.name] * totalPortions;
+    //     }
+    //   }
+    // }
 
     return inventory.save();
   }

@@ -11,14 +11,19 @@ export class InventoryController {
     return this.inventoryService.create(createInventoryDto);
   }
 
-  @Get()
-  findAll() {
-    return this.inventoryService.findAll();
+  @Get(':sucursalId')
+  findAll( @Param('sucursalId') sucursalId: string) {
+    return this.inventoryService.findAll(sucursalId);
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.inventoryService.findOne(id);
+  }
+
+  @Get(':sucursalId/items')
+  getOnlyItems(@Param('sucursalId') sucursalId: string) {
+    return this.inventoryService.getOnlyItems(sucursalId);
   }
 
   @Patch(':id')
